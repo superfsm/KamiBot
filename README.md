@@ -1,3 +1,3 @@
 # KamiBot
 
-参考自：https://github.com/Yinzo/SmartQQBot
+参考自: https://github.com/Yinzo/SmartQQBot
