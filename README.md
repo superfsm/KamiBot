@@ -26,6 +26,6 @@ get_online_buddies() |
 get_discu_info(did) |
 get_recent_list() |
 change_status('away') | ['online','away','callme','busy','silent','hidden','offline']
-get_friend_info(tuin) | show info of a friend
+get_friend_info(tuin) |
 get_single_long_nick(tuin) | 显示目标签名
 get_group_info_ext(gcode) | 
