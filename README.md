@@ -2,7 +2,7 @@
 
 参考自: https://github.com/Yinzo/SmartQQBot
 
-##QQ's API：
+###QQ's API：
 #####Usage:
 ```
 bot = QQ()
