@@ -33,7 +33,7 @@ def init_logging(debug = False):
     if debug:
         consoleHandler.setLevel(logging.DEBUG)
     else:
-        consoleHandler.setLevel(logging.INFO)
+        consoleHandler.setLevel(logging.ERROR)
     rootLogger.addHandler(consoleHandler)
     
     #Test
@@ -53,7 +53,7 @@ if __name__ == '__main__':
     #Start Client
     bot = QQ()
     if bot.QR_login():
-        bot.poll_loop()
+        bot.start()
     # bot_handler = MsgHandler(bot)
     # while 1:
         # try:

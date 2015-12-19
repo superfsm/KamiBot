@@ -13,7 +13,7 @@ class HttpClient:
     debug = True
     session = requests.Session()
     r = None
-    
+
     def __init__(self):
         self.session.headers.update({
             'Accept': 'application/javascript, */*;q=0.8',
@@ -36,6 +36,7 @@ class HttpClient:
         try:
             if refer is not None:
                 self.session.headers.update({'Referer': refer})
+            logging.debug(data)
             self.r = self.session.post(url, data = data, timeout = 120)
             logging.debug("STATUS CODE = %d",self.r.status_code)
             if self.debug:
@@ -53,8 +54,10 @@ class HttpClient:
             logging.exception('Download error')
 
     def getCookie(self, key):
-        print self.r.cookies
-        try:
-            return self.r.cookies[key]
-        except:
-            return ''
+          return self.r.cookies[key]
+
+    def copy(self):
+        ret = HttpClient()
+        ret.session.headers = self.session.headers.copy()
+        ret.session.cookies = self.session.cookies.copy()
+        return ret
