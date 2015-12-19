@@ -3,6 +3,18 @@
 参考自: https://github.com/Yinzo/SmartQQBot
 
 ##QQ's API：
+#####Usage:
+```
+bot = QQ()
+if bot.QR_login():
+    bot.start()
+```
+#####Main API:
+API | Notes
+--- | --- 
+QR_login() | Show QR Code and login
+start() | Start polling and dispatching logic
+#####Tencent API:
 API | Notes
 --- | --- 
 get_friend_uin(tuin) | uin->QQ号
