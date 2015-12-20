@@ -41,7 +41,7 @@ def init_logging(debug = False):
 
 if __name__ == '__main__':
         
-    #Parsing arguments
+    #Parse arguments
     parser = argparse.ArgumentParser()
     parser.set_defaults(debug=False)
     parser.add_argument('-d', dest='debug', action='store_true')
@@ -54,12 +54,3 @@ if __name__ == '__main__':
     bot = QQ()
     if bot.QR_login():
         bot.start()
-    # bot_handler = MsgHandler(bot)
-    # while 1:
-        # try:
-            # new_msg = bot.check_msg()
-        # except socket.timeout, e:
-            # logging.warning("check msg timeout, retrying...")
-            # continue
-        # if new_msg is not None:
-            # bot_handler.handle(new_msg)

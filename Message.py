@@ -62,9 +62,6 @@ class Message():
     def send_txt(self, txt):
         self.QQ.send_msg(self.reply_type, self.reply_uin, txt)
     
-    def send_txt_to(self, txt):
-        self.QQ.send_msg(0, self.reply_uin, txt)
-    
     def send_txt_to_type(self, to_type, to_uin, to_txt):
         print '[{0}] {1} << {2}'.format(to_type, to_uin, to_txt).decode('utf-8').encode('gb2312')
         self.QQ.send_msg(to_type, to_uin, to_txt)
