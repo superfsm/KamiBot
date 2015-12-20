@@ -7,7 +7,8 @@
 ###Architecture
     1. QQ.py:   Abstract QQ's login and REST API, all received messages are saved to a queue.
     2. Dispatcher.py:  Add all addons to a pipeline, a message is passed through each addon on pipeline
-    3. Addons: All the replies and logic should be handled through addon. This way you can add/remove/modify addons without restart the program through superuser command.
+    3. Addons: All the replies and logic should be handled through addon. 
+               This way you can add/remove/modify addons without restart the program through superuser command.
 ###Setup
 ######Config.py
     addons: A lsit of string, indicating the addons under "addons" folder that you want to enable
