@@ -21,8 +21,6 @@ method | Notes
 --- | --- 
 QR_login() | Show QR Code and login
 start() | Start polling and dispatching logic
-######QQ API (REST):
-method | Notes
 --- | --- 
 get_friend_uin(tuin) | uin->QQ号
 get_self_info() |
