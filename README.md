@@ -1,20 +1,24 @@
 # KamiBot
 
-参考自: https://github.com/Yinzo/SmartQQBot
+感谢Yinzo，参考了其代码: https://github.com/Yinzo/SmartQQBot
 
-###QQ's API：
-#####Usage:
-```
-bot = QQ()
-if bot.QR_login():
-    bot.start()
-```
-#####Main API:
+###Usage
+    python main.py 
+###Architecture
+    1. QQ.py:   Abstract QQ's login and REST API, all received messages are saved to a queue.
+    2. Dispatcher.py:  Add all addons to a pipeline, a message is passed through each addon on pipeline
+    3. Addons: All the replies and logic should be handled through addon.
+
+###QQ's API
+    
+
+
+######Main API:
 API | Notes
 --- | --- 
 QR_login() | Show QR Code and login
 start() | Start polling and dispatching logic
-#####Tencent API:
+######Tencent API:
 API | Notes
 --- | --- 
 get_friend_uin(tuin) | uin->QQ号
