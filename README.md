@@ -7,8 +7,16 @@
 ###Architecture
     1. QQ.py:   Abstract QQ's login and REST API, all received messages are saved to a queue.
     2. Dispatcher.py:  Add all addons to a pipeline, a message is passed through each addon on pipeline
-    3. Addons: All the replies and logic should be handled through addon.
-
+    3. Addons: All the replies and logic should be handled through addon. This way you can add/remove/modify addons without restart the program through superuser command.
+###Setup
+######Config.py
+    addons: A lsit of string, indicating the addons under "addons" folder that you want to enable
+    group_su: superuser's QQ number, where you can execute superuser command
+    name_su: superuser's command handler's name
+######Superuser Command:
+    ##!ping: ping if the system is online
+    ##!list: list all the addons loaded
+    ##!reload: reload all addons (after you modify the codes of addons or Config)
 ###API
 ######class Message:
 
@@ -42,3 +50,4 @@ change_status('away') | ['online','away','callme','busy','silent','hidden','offl
 get_friend_info(tuin) |
 get_single_long_nick(tuin) | 显示目标签名
 get_group_info_ext(gcode) | 
+
