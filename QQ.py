@@ -49,10 +49,6 @@ _HASH_JS = """
         }
         """
 
-def _display_QRCode():
-    img = Image.open(_QR_PATH)
-    img.show()
-
 def _get_revalue(html, rex, er, ex):
     v = re.search(rex, html)
     if v is None:
@@ -92,13 +88,16 @@ class QQ:
 
 
         # Message Handling
-        self.recvQ = Queue()
-        self.sendQ = Queue()
+        self.msgQ = Queue()
         self.msg_id = random.randint(0, 90000000)
 
         # Cache
         self.username = ''
         self.uin2acc = dict()
+        
+    def _display_QRCode(self):
+        img = Image.open(_QR_PATH)
+        img.show()
 
     def QR_login(self):
         logging.info('Connecting to QQ server...')
@@ -137,7 +136,7 @@ class QQ:
                 os.remove(_QR_PATH)
             http_client.download('https://ssl.ptlogin2.qq.com/ptqrshow?appid={0}&e=0&l=L&s=8&d=72&v=4'.format(appid),_QR_PATH)
             print "Please (re)scan the QR code ({0})".format(_QR_PATH)
-            thread.start_new_thread(_display_QRCode,())
+            thread.start_new_thread(self._display_QRCode,())
 
             while True:
                 ret = []
@@ -227,11 +226,9 @@ class QQ:
 
     def start(self):
         thread.start_new_thread(self._dispatch,())
-        logging.debug("Dispatch thread started")
+        logging.debug("Dispatcher thread started")
 
         self._poll_loop()
-        # thread.start_new_thread(self._poll_loop,())
-        # logging.debug("Polling thread started")
 
     def _dispatch(self):
         dispatcher = Dispatcher(self)
@@ -265,46 +262,46 @@ class QQ:
             if 'errmsg' in ret:
                 return
             else:
-                self.recvQ.put(InMessage(ret['result'], self))
+                self.msgQ.put(Message(self, ret['result']))
         else:
-            raise Exception('A new return code caught')
+            time.sleep(1)
+            return
+            #raise Exception('A new return code caught')
 
-    def send_msg(self, sendMsg):
+    def send_msg(self, to_type, to_uin, to_txt):
 
-        to = sendMsg.to
-
-        txt = sendMsg.txt
-        txt = str(txt.replace("\\", "\\\\\\\\").replace("\n", "\\\\n").replace("\t", "\\\\t")).decode("utf-8")
+        to_txt = str(to_txt.replace("\\", "\\\\\\\\").replace("\n", "\\\\n").replace("\t", "\\\\t")).decode("utf-8")
 
         msg_id = self.msg_id
         self.msg_id += 1
 
         req_url = None
         data = None
-        if sendMsg.isGroup:
-            req_url = "http://d1.web2.qq.com/channel/send_qun_msg2"
-            data = (
-                ('r',
-                 '{{"group_uin":{0},"content":"[\\"{4}\\",[\\"font\\",{{\\"name\\":\\"Arial\\",\\"size\\":\\"10\\",\\"style\\":[0,0,0],\\"color\\":\\"000000\\"}}]]","face":534,"clientid":{1},"msg_id":{2},"psessionid":"{3}"}}'.format(
-                     to, self.client_id, msg_id, self.psessionid, txt)),
-                ('clientid', self.client_id),
-                ('psessionid', self.psessionid)
-            )
-        elif sendMsg.isDiscu:
-            req_url = "http://d1.web2.qq.com/channel/send_discu_msg2"
-            data = (
-                ('r',
-                 '{{"did":{0},"content":"[\\"{4}\\",[\\"font\\",{{\\"name\\":\\"Arial\\",\\"size\\":\\"10\\",\\"style\\":[0,0,0],\\"color\\":\\"000000\\"}}]]","face":534,"clientid":{1},"msg_id":{2},"psessionid":"{3}"}}'.format(
-                     to, self.client_id, msg_id, self.psessionid, txt)),
-                ('clientid', self.client_id),
-                ('psessionid', self.psessionid)
-            )
-        else:
+        
+        if to_type == 0:
             req_url = "http://d1.web2.qq.com/channel/send_buddy_msg2"
             data = (
                 ('r',
                  '{{"to":{0},"content":"[\\"{4}\\",[\\"font\\",{{\\"name\\":\\"Arial\\",\\"size\\":\\"10\\",\\"style\\":[0,0,0],\\"color\\":\\"000000\\"}}]]","face":564,"clientid":{1},"msg_id":{2},"psessionid":"{3}"}}'.format(
-                     to, self.client_id, msg_id, self.psessionid, txt)),
+                     to_uin, self.client_id, msg_id, self.psessionid, to_txt)),
+                ('clientid', self.client_id),
+                ('psessionid', self.psessionid)
+            )
+        elif to_type == 1:
+            req_url = "http://d1.web2.qq.com/channel/send_qun_msg2"
+            data = (
+                ('r',
+                 '{{"group_uin":{0},"content":"[\\"{4}\\",[\\"font\\",{{\\"name\\":\\"Arial\\",\\"size\\":\\"10\\",\\"style\\":[0,0,0],\\"color\\":\\"000000\\"}}]]","face":534,"clientid":{1},"msg_id":{2},"psessionid":"{3}"}}'.format(
+                     to_uin, self.client_id, msg_id, self.psessionid, to_txt)),
+                ('clientid', self.client_id),
+                ('psessionid', self.psessionid)
+            )
+        elif to_type == 2:
+            req_url = "http://d1.web2.qq.com/channel/send_discu_msg2"
+            data = (
+                ('r',
+                 '{{"did":{0},"content":"[\\"{4}\\",[\\"font\\",{{\\"name\\":\\"Arial\\",\\"size\\":\\"10\\",\\"style\\":[0,0,0],\\"color\\":\\"000000\\"}}]]","face":534,"clientid":{1},"msg_id":{2},"psessionid":"{3}"}}'.format(
+                     to_uin, self.client_id, msg_id, self.psessionid, to_txt)),
                 ('clientid', self.client_id),
                 ('psessionid', self.psessionid)
             )
