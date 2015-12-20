@@ -228,7 +228,8 @@ class QQ:
         thread.start_new_thread(self._dispatch,())
         logging.debug("Dispatcher thread started")
 
-        self._poll_loop()
+        thread.start_new_thread(self._poll_loop,())
+        logging.debug("Pooling thread started")
 
     def _dispatch(self):
         dispatcher = Dispatcher(self)

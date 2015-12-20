@@ -13,8 +13,10 @@ sys.setdefaultencoding("utf-8")
 sys.dont_write_bytecode = True
 
 import argparse
+import time
 
 from QQ import *
+from Message import *
 
 def init_logging(debug = False):
     
@@ -51,6 +53,22 @@ if __name__ == '__main__':
     init_logging(args.debug)
     
     #Start Client
-    bot = QQ()
-    if bot.QR_login():
-        bot.start()
+    client = QQ()
+    if client.QR_login():
+        client.start()
+    else:
+        logging.error('Quit QQ starting failed')
+        
+    while True:
+        dummy_txt = raw_input("Dummy Message >>").strip()
+        if dummy_txt.strip() == '':
+            continue
+        client.msgQ.put(Message(client, dummy_txt = dummy_txt))
+        time.sleep(0.1)
+        while not client.msgQ.empty():
+            time.sleep(0.1)
+        
+        
+        
+        
+        

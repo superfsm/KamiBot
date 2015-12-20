@@ -10,9 +10,10 @@ from AbstractHandler import *
 import Config
 
 class Handler(AbstractHandler):
-    
+
     def process(self, msg):
-        if self.QQ.get_friend_uin(msg.from_sender) in Config.group_su:
-            return False, msg.from_txt
+        if self.QQ.get_friend_uin(msg.from_sender) in Config.group_root:
+            if msg.from_type == 0:
+                return True, msg.from_txt
 
         return False
