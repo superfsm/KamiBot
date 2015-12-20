@@ -10,13 +10,21 @@
     3. Addons: All the replies and logic should be handled through addon.
 
 ###API
+######class Message:
+
+    message type:
+    0: personal message
+    1: group message
+    2: discussion message
+
 method | Notes
 --- | --- 
-QR_login() | Show QR Code and login
-start() | Start polling and dispatching logic  
+send() | reply self.reply_txt to where it comes from
+send_txt(txt) | reply txt to where it comes from
+send_txt_to_type(type, uin, txt) | reply txt of certain type to a uin
 
 
-######QQ API (basic):
+######class QQ:
 method | Notes
 --- | --- 
 QR_login() | Show QR Code and login
