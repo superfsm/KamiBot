@@ -5,10 +5,10 @@
 ###Usage
     python main.py 
 ###Architecture
-    1. QQ.py:   Abstract QQ's login and REST API, all received messages are saved to a queue.
-    2. Dispatcher.py:  Add all addons to a pipeline, a message is passed through each addon on pipeline
-    3. Addons: All the replies and logic should be handled through addon. 
-               This way you can add/remove/modify addons without restart the program through superuser command.
+    1. QQ.py:   On a dedicated thread, push all received message to a queue. Abstract of QQ REST API.
+    2. Dispatcher.py:  On a dedicated thread, deque a message and passed it through the pipeline, of addons
+    3. Addons: All addons form the pipeline. Each addon can choose to consume the message or not.
+               Can add/remove/modify addons without restart the program through superuser command.
 ###Setup
 ######Config.py
     addons: A lsit of string, indicating the addons under "addons" folder that you want to enable
