@@ -23,6 +23,7 @@ group_root = (
 
 # name
 name_root = '至高神格'
+name_bot = '小忍'
 
 
 

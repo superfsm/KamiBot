@@ -45,8 +45,21 @@ class Message():
             value = result['value']
             content = value['content']
 
+            # ignore emotion
+            self.from_txt = ''
+            for c in content:
+                if isinstance(c,list):
+                    if c[0] != 'font':
+                        if not self.from_txt:
+                            self.from_txt += '['+str(c[1])+']'
+                        else:
+                            self.from_txt += ' ['+str(c[1])+']'
+                else:
+                    if not self.from_txt:
+                        self.from_txt += c
+                    else:
+                        self.from_txt += ' ' + c
 
-            self.from_txt = content[1]
             self.from_msg_id = value['msg_id']
             self.from_time = value['time']
 
@@ -71,7 +84,7 @@ class Message():
 
 
 
-        print '[{0}] {1} >> {2}'.format(self.from_uin, self.from_sender, self.from_txt).decode('utf-8').encode(Config.console_encoding)
+        print '[{0:>10}] {1:>10} >> {2}'.format(self.from_uin, self.from_sender, self.from_txt).decode('utf-8').encode(Config.console_encoding,'ignore')
 
     def send(self):
         self.send_txt(self.reply_txt)
@@ -80,7 +93,7 @@ class Message():
         self.send_txt_to_type(self.reply_type, self.reply_uin, txt)
 
     def send_txt_to_type(self, to_type, to_uin, to_txt):
-        print '[{0}] {1} << {2}'.format(to_type, to_uin, to_txt).decode('utf-8').encode(Config.console_encoding)
+        print '[{0:>10}] {1:>10} << {2}'.format(to_type, to_uin, to_txt).decode('utf-8').encode(Config.console_encoding,'ignore')
         if to_uin != 0:
             self.QQ.send_msg(to_type, to_uin, to_txt)
 

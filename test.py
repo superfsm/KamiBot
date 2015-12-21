@@ -13,8 +13,10 @@
 # """
 
 # print (json.dumps(json.loads(JJJ), sort_keys=True,indent=4, separators=(',', ': ')).decode('utf-8').encode('gb2312'))
-with open(fname) as f:
-    content = f.readlines()
+
+
+        
+        
 
 
 
