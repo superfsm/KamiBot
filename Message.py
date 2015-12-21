@@ -82,8 +82,6 @@ class Message():
             self.reply_uin = self.from_uin
             self.reply_type = self.from_type
 
-
-
         print '[{0:>10}] {1:>10} >> {2}'.format(self.from_uin, self.from_sender, self.from_txt).decode('utf-8').encode(Config.console_encoding,'ignore')
 
     def send(self):
@@ -93,7 +91,7 @@ class Message():
         self.send_txt_to_type(self.reply_type, self.reply_uin, txt)
 
     def send_txt_to_type(self, to_type, to_uin, to_txt):
-        print '[{0:>10}] {1:>10} << {2}'.format(to_type, to_uin, to_txt).decode('utf-8').encode(Config.console_encoding,'ignore')
+        print '[type{0:>6}] {1:>10} << {2}'.format(to_type, to_uin, to_txt).decode('utf-8').encode(Config.console_encoding,'ignore')
         if to_uin != 0:
             self.QQ.send_msg(to_type, to_uin, to_txt)
 

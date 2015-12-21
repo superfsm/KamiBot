@@ -80,6 +80,12 @@ class Dispatcher:
     def _root_process(self, msg):
 
         sender = self.QQ.get_friend_uin(msg.from_sender)
+
+        if Config.debug:
+            print '----------'
+            print 'from:', sender
+
+
         if not sender in Config.group_root:
             return False
 
@@ -95,7 +101,7 @@ class Dispatcher:
             reply.strip()
         elif txt in ('##!reload', '##！reload'):
             self._reload_pipeline()
-            reply = 'Modules reloaded!'
+            reply = 'Done!'
         else:
             return False
         reply = '[{0}] {1}'.format(Config.name_root, reply)
