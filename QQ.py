@@ -223,6 +223,56 @@ class QQ:
         # self.get_single_long_nick(1582813192)
         # self.get_group_info_ext(3229000491)
         return True
+        
+    def relogin(self):
+        
+        http_client = self.recv_client
+        
+        # Browse proxy urls to get correct cookies
+        http_client.GET(ret[5])
+        http_client.GET('http://web2.qq.com/web2_cookie_proxy.html')
+
+        # Login
+        ret = {}
+
+        html = http_client.POST('http://d1.web2.qq.com/channel/login2',
+            {'r': '{{"ptwebqq":"{0}","clientid":{1},"psessionid":"{2}","status":"online"}}'.format(self.ptwebqq, self.client_id, self.psessionid)},
+            _REFERER_URL)
+        ret = json.loads(html)
+
+        if ret['retcode'] != 0:
+            logging.error("login return code: %s", str(ret['retcode']))
+            return False
+
+        self.psessionid = ret['result']['psessionid']
+        self.uin = ret['result']['uin']
+
+        # get hash
+        logging.debug("uin = {0}".format(self.uin))
+        logging.debug("ptwebqq = {0}".format(self.ptwebqq))
+        self.hash_value = self.hash_func(self.uin, self.ptwebqq)
+        logging.debug("hash_value = {0}".format(self.hash_value))
+
+        # get vfwebqq
+        ret = {}
+        html = http_client.GET('http://s.web2.qq.com/api/getvfwebqq?ptwebqq={0}&clientid={1}&psessionid=&t={2}'.format(
+            self.ptwebqq, self.client_id, _date_to_millis()), _REFERER_URL_2013)
+        ret = json.loads(html)
+
+        if ret['retcode'] != 0:
+            logging.error("getvfwebqq return code: %s", str(ret['retcode']))
+            return False
+        self.vfwebqq = ret['result']['vfwebqq']
+
+        # Success
+        logging.info("QQ: {0} login successfully, Username：{1}".format(self.uin, self.username))
+        print "Welcome, " + self.username.decode('utf-8').encode('gb2312') + "!"
+        print "-------------------------------------------------------"
+        
+        thread.start_new_thread(self._poll_loop,())
+        logging.debug("Pooling thread started")
+
+        return True
 
     def start(self):
         thread.start_new_thread(self._dispatch,())

@@ -37,6 +37,8 @@ class Dispatcher:
         for m in Config.addons:
             try:
                 m = 'addons.' + m
+                if Config.debug:
+                    print 'importing ' + m + '...'
                 if m in sys.modules:
                     module = reload(sys.modules[m])
                 else:
@@ -46,6 +48,7 @@ class Dispatcher:
             except:
                 traceback.print_exc()
                 logging.error("Addon loading failed")
+        print "-------------------------------------------------------"
 
     def start(self):
         while True:

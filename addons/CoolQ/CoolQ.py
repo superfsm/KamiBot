@@ -9,8 +9,9 @@ import jieba
 import codecs
 from collections import defaultdict
 import random
+import os
 
-from AbstractHandler import *
+from addons.AbstractHandler import *
 import Config
 
 _STOPWORDS = ('~!@#$%^&*()-_=+[{]};:\'",<.>/?·~！@#￥%……&*（）-——=+【{】}；：‘“，《。》、？')
@@ -25,13 +26,23 @@ class Handler(AbstractHandler):
 
     def _init_dict(self):
         self.H = defaultdict(set)
+        
+        mypath = os.path.dirname(__file__)
+        mypath = os.path.join(mypath, 'dicts/')
+        files = [os.path.join(mypath, f) for f in os.listdir(mypath) if os.path.isfile(os.path.join(mypath, f))]
 
-        with codecs.open('dict.txt','r','gb2312','ignore') as f:
-            lines = f.readlines()
-            i = 1
-            while i < len(lines):
-                self.H[lines[i-1].strip()].add(lines[i].strip())
-                i += 3
+        for f in files:
+            
+            if Config.debug:
+                print '----------'
+                print 'Find dict ' + f + '...'
+
+            with codecs.open(f,'r','gb2312','ignore') as f:
+                lines = f.readlines()
+                i = 1
+                while i < len(lines):
+                    self.H[lines[i-1].strip()].add(lines[i].strip())
+                    i += 3
 
     def process(self, msg):
 

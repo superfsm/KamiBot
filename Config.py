@@ -16,7 +16,8 @@ console_encoding = 'gbk'
 addons = [
     'Counter',
     #'Echo',
-    'CoolQ',
+    'Shinobu',
+    'CoolQ.CoolQ', 
 ]
 
 # superuser groups

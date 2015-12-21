@@ -20,7 +20,10 @@ from QQ import *
 from Message import *
 import Utils
 
-def _process_cmd(txt):
+def _process_cmd(client, txt):
+    
+    if txt == '##!relogin':
+        client.relogin()
     client.msgQ.put(Message(client, dummy_txt = txt))
     time.sleep(0.1)
     while not client.msgQ.empty():
@@ -50,7 +53,7 @@ if __name__ == '__main__':
         dummy_txt = raw_input("Cmd>>\n").strip()
         if dummy_txt.strip() == '':
             continue
-        _process_cmd(dummy_txt)
+        _process_cmd(client, dummy_txt)
         
         
         
