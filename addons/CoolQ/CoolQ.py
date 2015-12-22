@@ -48,6 +48,22 @@ class Handler(AbstractHandler):
 
         #if not self.QQ.get_friend_uin(msg.from_sender) in Config.group_root:
         #    return True, ''
+        
+        if 'prob_talk' in self.QQ.shared_data:
+            prob_talk = self.QQ.shared_data['prob_talk']
+        else:
+            prob_talk = Config.prob_talk
+
+        if prob_talk > Config.prob_talk + 0.05:
+            self.QQ.shared_data['prob_talk'] = prob_talk - 0.05
+        elif prob_talk < Config.prob_talk - 0.02:
+            self.QQ.shared_data['prob_talk'] = prob_talk + 0.02
+        else:
+            self.QQ.shared_data['prob_talk'] = Config.prob_talk
+        
+        print 'prob_talk =', prob_talk
+        if random.random() > prob_talk:
+            return False
 
         seg_list = list(jieba.cut(msg.from_txt, cut_all=True))
         seg_list = [x for x in seg_list if (x not in _STOPWORDS)]

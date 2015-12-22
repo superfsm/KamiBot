@@ -95,6 +95,9 @@ class QQ:
         self.username = ''
         self.uin2acc = dict()
         
+        # Cshard data for addons
+        self.shared_data = dict()
+        
     def _display_QRCode(self):
         img = Image.open(_QR_PATH)
         img.show()

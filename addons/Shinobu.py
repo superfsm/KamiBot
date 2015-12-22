@@ -40,7 +40,8 @@ class Handler(AbstractHandler):
         else:
             isDay = False
         
-        if self.isName(txt) or (self.containsName(txt) and len(txt) <= 4):
+        if self.isName(txt) or (self.containsName(txt) and (txt.find('在么') > -1 or txt.find('出来') > -1)):
+            self.QQ.shared_data['prob_talk'] = 1.0
             if isHost:
                 if isDay:
                     return True, random.choice(['虽然是白天，看在主人的面之上我还是出来了呢','Kamisama~~要带我出去玩嘛，虽然是白天的啦，不过要是有甜甜圈的话','咔咔，吾主哦，呼唤吾有何事','吾之半身，何事？'])
@@ -53,8 +54,19 @@ class Handler(AbstractHandler):
                     return True, random.choice(['哦，是要和我去玩吗？','只要甜甜圈存在之一天，吾就不会毁灭人类!','纳尼？','嗯？已经这个时候了么','&^%#(*$#,等我吃完的','好想吸血啊，给我吃一点好不好，就一点点','要成为吾的眷属么？'])
                     
         if txt.find('甜甜圈') > -1:
+            self.QQ.shared_data['prob_talk'] = 0.8
             return True,  random.choice(['在哪里在哪里？！快带我去','不要诱骗小萝莉！！哦不，等等~','好像听到了什么愉悦的东西','只要甜甜圈存在之一天，吾就不会毁灭人类!'])
         
+        if self.containsName(txt):
+            self.QQ.shared_data['prob_talk'] = 1.0
+        
+        if self.containsName(txt) and txt.find('闭嘴') > -1:
+            self.QQ.shared_data['prob_talk'] = 0.0
+            return True, '好吧。。。知道了。。（欺负萝莉的坏人你等着，回来教训你）'
+            
+        if txt == 'prpr':
+             return True, 'hentai!'
+
         return False
         
     def isName(self, txt):

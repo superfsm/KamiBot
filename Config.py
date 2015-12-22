@@ -30,6 +30,6 @@ group_root = (
 name_root = '至高神指令'
 name_bot = '小忍'
 
-
+prob_talk = 0.3
 
 
